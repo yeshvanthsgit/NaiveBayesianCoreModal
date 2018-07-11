@@ -1,0 +1,106 @@
+[ {
+  "Region" : "Region1",
+  "SiteName" : "Site 1",
+  "Site Factor 1" : "12.22",
+  "Site Factor 2" : "131.11",
+  "Site Factor 3" : "111.11",
+  "SitePerformance" : "BEST"
+}, {
+  "Region" : "Region2",
+  "SiteName" : "Site 2",
+  "Site Factor 1" : "12.33",
+  "Site Factor 2" : "131.12",
+  "Site Factor 3" : "111.12",
+  "SitePerformance" : "BEST"
+}, {
+  "Region" : "Region3",
+  "SiteName" : "Site 3",
+  "Site Factor 1" : "12.44",
+  "Site Factor 2" : "131.13",
+  "Site Factor 3" : "111.13",
+  "SitePerformance" : "BEST"
+}, {
+  "Region" : "Region4",
+  "SiteName" : "Site 4",
+  "Site Factor 1" : "12.55",
+  "Site Factor 2" : "131.14",
+  "Site Factor 3" : "111.14",
+  "SitePerformance" : "BEST"
+}, {
+  "Region" : "Region5",
+  "SiteName" : "Site 5",
+  "Site Factor 1" : "12.66",
+  "Site Factor 2" : "131.15",
+  "Site Factor 3" : "111.15",
+  "SitePerformance" : "BEST"
+}, {
+  "Region" : "Region1",
+  "SiteName" : "Site 6",
+  "Site Factor 1" : "12.77",
+  "Site Factor 2" : "131.16",
+  "Site Factor 3" : "111.16",
+  "SitePerformance" : "GOOD"
+}, {
+  "Region" : "Region2",
+  "SiteName" : "Site 7",
+  "Site Factor 1" : "12.88",
+  "Site Factor 2" : "131.17",
+  "Site Factor 3" : "111.17",
+  "SitePerformance" : "GOOD"
+}, {
+  "Region" : "Region3",
+  "SiteName" : "Site 8",
+  "Site Factor 1" : "12.99",
+  "Site Factor 2" : "131.18",
+  "Site Factor 3" : "111.18",
+  "SitePerformance" : "GOOD"
+}, {
+  "Region" : "Region4",
+  "SiteName" : "Site 9",
+  "Site Factor 1" : "13.1",
+  "Site Factor 2" : "131.19",
+  "Site Factor 3" : "111.19",
+  "SitePerformance" : "GOOD"
+}, {
+  "Region" : "Region5",
+  "SiteName" : "Site 10",
+  "Site Factor 1" : "13.21",
+  "Site Factor 2" : "131.2",
+  "Site Factor 3" : "111.2",
+  "SitePerformance" : "GOOD"
+}, {
+  "Region" : "Region1",
+  "SiteName" : "Site 11",
+  "Site Factor 1" : "13.32",
+  "Site Factor 2" : "131.21",
+  "Site Factor 3" : "111.21",
+  "SitePerformance" : "GOOD"
+}, {
+  "Region" : "Region2",
+  "SiteName" : "Site 12",
+  "Site Factor 1" : "13.43",
+  "Site Factor 2" : "131.22",
+  "Site Factor 3" : "111.22",
+  "SitePerformance" : "GOOD"
+}, {
+  "Region" : "Region3",
+  "SiteName" : "Site 13",
+  "Site Factor 1" : "13.54",
+  "Site Factor 2" : "131.23",
+  "Site Factor 3" : "111.23",
+  "SitePerformance" : "BETTER"
+}, {
+  "Region" : "Region4",
+  "SiteName" : "Site 14",
+  "Site Factor 1" : "13.65",
+  "Site Factor 2" : "131.24",
+  "Site Factor 3" : "111.24",
+  "SitePerformance" : "BETTER"
+}, {
+  "Region" : "Region5",
+  "SiteName" : "Site 15",
+  "Site Factor 1" : "13.76",
+  "Site Factor 2" : "131.25",
+  "Site Factor 3" : "111.25",
+  "SitePerformance" : "BETTER"
+} ]

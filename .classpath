@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Downloads/weka-stable-3.6.8.jar/weka-stable-3.6.8.jar" sourcepath="C:/Users/RSRIRA~1/AppData/Local/Temp/.org.sf.feeling.decompiler1522849330538/source/weka-stable-3.6.8-sources-1522852557277.jar"/>
+	<classpathentry kind="lib" path="C:/ngwpsharedlib/beanio-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Downloads/super-csv-2.1.0.jar/super-csv-2.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Softwares/java-cup-bin-11b-20160615/java-cup-11b.jar"/>
+	<classpathentry kind="lib" path="C:/Softwares/java-cup-bin-11b-20160615/java-cup-11b-runtime.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Downloads/jar_files (4)/sfm-converter-3.7-jdk16.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Downloads/jar_files (4)/sfm-csv-3.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Downloads/jar_files (4)/sfm-map-3.7-jdk16.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Downloads/jar_files (4)/sfm-reflect-3.7-jdk16.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Downloads/jar_files (4)/sfm-tuples-3.7-jdk16.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Downloads/jar_files (4)/sfm-util-3.7-jdk16.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Documents/My Received Files/jackson-databind-2.8.9.jar" sourcepath="C:/Users/RSRIRA~1/AppData/Local/Temp/.org.sf.feeling.decompiler1523253627359/source/jackson-databind-2.8.9-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Documents/My Received Files/jackson-dataformat-csv-2.8.9.jar" sourcepath="C:/Users/RSRIRA~1/AppData/Local/Temp/.org.sf.feeling.decompiler1525784727189/source/jackson-dataformat-csv-2.8.9-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Documents/My Received Files/jackson-core-2.8.9.jar"/>
+	<classpathentry kind="lib" path="C:/Users/rsriramakavacham/Documents/My Received Files/jackson-annotations-2.8.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

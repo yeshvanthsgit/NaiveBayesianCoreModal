@@ -1,0 +1,13 @@
+@relation region
+
+@attribute Region {Region1,Region2,Region3,Region4,Region5}
+@attribute RegionFactor1 numeric
+@attribute RegionFactor2 numeric
+@attribute RegionFactor3 numeric
+
+@data
+Region1,12.22,131.11,111.11
+Region2,12.33,131.12,111.12
+Region3,12.44,131.13,111.13
+Region4,12.55,131.14,111.14
+Region5,12.66,131.15,111.15

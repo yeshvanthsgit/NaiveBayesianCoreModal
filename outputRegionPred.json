@@ -1,0 +1,206 @@
+[ {
+  "Political Support" : "BAD",
+  "Region" : "Region1",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "GOOD",
+  "Region" : "Region1",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "BAD",
+  "Region" : "Region1",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "GOOD",
+  "Region" : "Region1",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "BAD",
+  "Region" : "Region1",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "GOOD",
+  "Region" : "Region1",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "BAD",
+  "Region" : "Region1",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "GOOD",
+  "Region" : "Region1",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region2",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region2",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region2",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region2",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region2",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region2",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region2",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region2",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region3",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region3",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region3",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region3",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region3",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region3",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region3",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region3",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region4",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region4",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region4",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region4",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region4",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region4",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region4",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region4",
+  "PastPerformance" : "N/A",
+  "RegionPerformance" : "BETTER"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region5",
+  "PastPerformance" : "BAD",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region5",
+  "PastPerformance" : "GOOD",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region5",
+  "PastPerformance" : "BAD",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region5",
+  "PastPerformance" : "GOOD",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region5",
+  "PastPerformance" : "BAD",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region5",
+  "PastPerformance" : "GOOD",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region5",
+  "PastPerformance" : "BAD",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "N/A",
+  "Region" : "Region5",
+  "PastPerformance" : "GOOD",
+  "RegionPerformance" : "BEST"
+}, {
+  "Political Support" : "",
+  "Region" : "",
+  "PastPerformance" : "",
+  "RegionPerformance" : "BEST"
+} ]

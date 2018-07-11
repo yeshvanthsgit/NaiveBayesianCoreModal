@@ -1,0 +1,24 @@
+@relation site
+
+@attribute Region {Region1,Region2,Region3,Region4,Region5}
+@attribute SiteName {'Site 1','Site 2','Site 3','Site 4','Site 5','Site 6','Site 7','Site 8','Site 9','Site 10','Site 11','Site 12','Site 13','Site 14','Site 15'}
+@attribute 'Site Factor 1' numeric
+@attribute 'Site Factor 2' numeric
+@attribute 'Site Factor 3' numeric
+
+@data
+Region1,'Site 1',12.22,131.11,111.11
+Region2,'Site 2',12.33,131.12,111.12
+Region3,'Site 3',12.44,131.13,111.13
+Region4,'Site 4',12.55,131.14,111.14
+Region5,'Site 5',12.66,131.15,111.15
+Region1,'Site 6',12.77,131.16,111.16
+Region2,'Site 7',12.88,131.17,111.17
+Region3,'Site 8',12.99,131.18,111.18
+Region4,'Site 9',13.1,131.19,111.19
+Region5,'Site 10',13.21,131.2,111.2
+Region1,'Site 11',13.32,131.21,111.21
+Region2,'Site 12',13.43,131.22,111.22
+Region3,'Site 13',13.54,131.23,111.23
+Region4,'Site 14',13.65,131.24,111.24
+Region5,'Site 15',13.76,131.25,111.25

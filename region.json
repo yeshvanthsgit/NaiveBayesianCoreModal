@@ -1,0 +1,26 @@
+[ {
+  "Region" : "Region1",
+  "RegionFactor1" : "12.22",
+  "RegionFactor2" : "131.11",
+  "RegionFactor3" : "111.11"
+}, {
+  "Region" : "Region2",
+  "RegionFactor1" : "12.33",
+  "RegionFactor2" : "131.12",
+  "RegionFactor3" : "111.12"
+}, {
+  "Region" : "Region3",
+  "RegionFactor1" : "12.44",
+  "RegionFactor2" : "131.13",
+  "RegionFactor3" : "111.13"
+}, {
+  "Region" : "Region4",
+  "RegionFactor1" : "12.55",
+  "RegionFactor2" : "131.14",
+  "RegionFactor3" : "111.14"
+}, {
+  "Region" : "Region5",
+  "RegionFactor1" : "12.66",
+  "RegionFactor2" : "131.15",
+  "RegionFactor3" : "111.15"
+} ]
