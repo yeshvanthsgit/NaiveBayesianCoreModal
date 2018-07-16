@@ -1,18 +1,15 @@
 package com.mkyong.core;
+
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -34,9 +31,12 @@ public class SiteLevelPredictor {
 	private static final String pastHistoryArffFile = "sitePast.arff ";
 	private static final String predictableCsvFile = "C:\\Users\\rsriramakavacham\\Desktop\\Oil\\site.csv ";
 	private static final String predictableArffFile = "siteActual.arff";
+	static List<String> siteAttributesList = null;
 
 	public static void main(String[] args) throws Exception {
 		try {
+			generateCsvs();
+			
 			File input = new File(predictableCsvFile);
 			File output = new File("outputSite.json");
 
@@ -48,35 +48,32 @@ public class SiteLevelPredictor {
 
 			mapper.writerWithDefaultPrettyPrinter().writeValue(output, readAll);
 
-			
 			convertCsvToArff(pastHistoryCsvFile, pastHistoryArffFile, predictableCsvFile, predictableArffFile);
 
-			NaiveBayes nb = modalBuildingAndEvaluation();
-
-			Instances testdata = loadTestDataToPredict();
-
-			predictFromNativeBayesModal(testdata, nb, readAll, mapper);
-			
-			
+//			NaiveBayes nb = modalBuildingAndEvaluation();
+//
+//			Instances testdata = loadTestDataToPredict();
+//
+//			predictFromNativeBayesModal(testdata, nb, readAll, mapper);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	private static void generateCsvs() throws Exception{
+
+	private static void generateCsvs() throws Exception {
 		JsonCsvUtils jsonCsvUtils = new JsonCsvUtilsImpl();
-    	jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://localhost:8082/refinery/fetchData/TrainDB/Site"), pastHistoryCsvFile);
-    	jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://localhost:8082/refinery/fetchData/TestDB/Site"), predictableCsvFile);
+		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://localhost:8082/refinery/fetchData/TrainDB/Site"),
+				pastHistoryCsvFile);
+		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://localhost:8082/refinery/fetchData/TestDB/Site"),
+				predictableCsvFile);
 	}
-	
+
 	public static void predictSite() throws Exception {
 		try {
-			
+
 			generateCsvs();
-			
-			
-			
+
 			File input = new File(predictableCsvFile);
 			File output = new File("outputSite.json");
 
@@ -88,7 +85,6 @@ public class SiteLevelPredictor {
 
 			mapper.writerWithDefaultPrettyPrinter().writeValue(output, readAll);
 
-			
 			convertCsvToArff(pastHistoryCsvFile, pastHistoryArffFile, predictableCsvFile, predictableArffFile);
 
 			NaiveBayes nb = modalBuildingAndEvaluation();
@@ -96,8 +92,6 @@ public class SiteLevelPredictor {
 			Instances testdata = loadTestDataToPredict();
 
 			predictFromNativeBayesModal(testdata, nb, readAll, mapper);
-			
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,16 +102,31 @@ public class SiteLevelPredictor {
 		CSVLoader loader = new CSVLoader();
 		loader.setSource(new File(excelPath));
 		Instances data = loader.getDataSet();
-		ReadConfig rc = new ReadConfig(); 
-		for(String attr : rc.getSiteAttributes()){
-			if(data.attribute(attr) != null){
-				data.deleteAttributeAt(data.attribute(attr).index());	
+		ReadConfig rc = new ReadConfig();
+		for (String attr : rc.getSiteAttributes()) {
+			if (data.attribute(attr) != null) {
+				data.deleteAttributeAt(data.attribute(attr).index());
 			}
 		}
 		BufferedWriter writer = new BufferedWriter(new FileWriter(arffFileName));
 		writer.write(data.toString());
 		writer.flush();
 		writer.close();
+
+		siteAttributesList = new ArrayList<String>();
+
+		BufferedReader b = new BufferedReader(new FileReader(arffFileName));
+
+		String readLine = "";
+
+		System.out.println("Reading file using Buffered Reader");
+
+		while ((readLine = b.readLine()) != null) {
+			if (readLine.contains("@attribute")) {
+				System.out.println(readLine);
+				siteAttributesList.add(readLine);
+			}
+		}
 	}
 
 	private static void generateArffCurrentFiles(String excelPath, String arffFileName) {
@@ -127,10 +136,10 @@ public class SiteLevelPredictor {
 			loader.setSource(new File(excelPath));
 			Instances data = loader.getDataSet();
 
-			ReadConfig rc = new ReadConfig(); 
-			for(String attr11 : rc.getSiteAttributes1()){
-				if(data.attribute(attr11) != null){
-					data.deleteAttributeAt(data.attribute(attr11).index());	
+			ReadConfig rc = new ReadConfig();
+			for (String attr11 : rc.getSiteAttributes1()) {
+				if (data.attribute(attr11) != null) {
+					data.deleteAttributeAt(data.attribute(attr11).index());
 				}
 			}
 
@@ -141,10 +150,34 @@ public class SiteLevelPredictor {
 			Attribute attribute = new Attribute("Overall_Site_Performance", attVals);
 			data.insertAttributeAt(attribute, data.numAttributes());
 
-			BufferedWriter writer = new BufferedWriter(new FileWriter(arffFileName));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("sampleTrainArff2.arff"));
 			writer.write(data.toString());
 			writer.flush();
 			writer.close();
+			String s;
+		    String totalStr = "";
+		    int count = 0;
+			
+		    BufferedReader b = new BufferedReader(new FileReader("sampleTrainArff2.arff"));
+
+            String readLine = "";
+
+            System.out.println("Reading file using Buffered Reader");
+
+            while ((readLine = b.readLine()) != null) {
+            	if(readLine.contains("@attribute")){
+            		totalStr += siteAttributesList.get(count) + "\n";
+            		count++;
+            	}else{
+            		totalStr += readLine + "\n";
+            	}
+                
+            }
+			
+			BufferedWriter writer1 = new BufferedWriter(new FileWriter(arffFileName));
+			writer1.write(totalStr);
+			writer1.flush();
+			writer1.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -178,7 +211,7 @@ public class SiteLevelPredictor {
 		NaiveBayes nb = new NaiveBayes();
 		nb.buildClassifier(ins);
 		Evaluation eval_train = new Evaluation(ins);
-	    eval_train.evaluateModel(nb,ins);
+		eval_train.evaluateModel(nb, ins);
 		return nb;
 	}
 
@@ -199,38 +232,38 @@ public class SiteLevelPredictor {
 		mapper.writerWithDefaultPrettyPrinter().writeValue(outputPred, readAll);
 		JsonReader.postMultiPartFile(UPDATE_DATA_SITE, SAVE_UPDATED_JSON);
 	}
-	
-	private static NaiveBayes modalBuildingAndEvaluation() throws Exception{
-		DataSource source = new DataSource("sitePast.arff");
-		Instances dataset = source.getDataSet();	
-		//set class index to the last attribute
-		dataset.setClassIndex(dataset.numAttributes()-1);
 
-		//create the classifier
+	private static NaiveBayes modalBuildingAndEvaluation() throws Exception {
+		DataSource source = new DataSource("sitePast.arff");
+		Instances dataset = source.getDataSet();
+		// set class index to the last attribute
+		dataset.setClassIndex(dataset.numAttributes() - 1);
+
+		// create the classifier
 		NaiveBayes nb = new NaiveBayes();
 		nb.buildClassifier(dataset);
 
-//		int seed = 1;
-//		int folds = 5;
-//		// randomize data
-//		Random rand = new Random(seed);
-//		//create random dataset
-//		Instances randData = new Instances(dataset);
-//		randData.randomize(rand);
-//		//stratify	    
-//		if (randData.classAttribute().isNominal())
-//			randData.stratify(folds);
-//
-//		// perform cross-validation	    	    
-//		for (int n = 0; n < folds; n++) {
-//			Evaluation eval = new Evaluation(randData);
-//			//get the folds	      
-//			Instances train = randData.trainCV(folds, n);
-//			Instances test = randData.testCV(folds, n);	      
-//			// build and evaluate classifier	     
-//			nb.buildClassifier(train);
-//			eval.evaluateModel(nb, test);
-//		}
+		// int seed = 1;
+		// int folds = 5;
+		// // randomize data
+		// Random rand = new Random(seed);
+		// //create random dataset
+		// Instances randData = new Instances(dataset);
+		// randData.randomize(rand);
+		// //stratify
+		// if (randData.classAttribute().isNominal())
+		// randData.stratify(folds);
+		//
+		// // perform cross-validation
+		// for (int n = 0; n < folds; n++) {
+		// Evaluation eval = new Evaluation(randData);
+		// //get the folds
+		// Instances train = randData.trainCV(folds, n);
+		// Instances test = randData.testCV(folds, n);
+		// // build and evaluate classifier
+		// nb.buildClassifier(train);
+		// eval.evaluateModel(nb, test);
+		// }
 		return nb;
 	}
 

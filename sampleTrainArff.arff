@@ -1,0 +1,29 @@
+@relation actualOilRefinaryPrediction
+
+@attribute Condensor_Water {AVERAGE,BAD,GOOD}
+@attribute ReactionMechanism_Pressure {AVERAGE,BAD,GOOD}
+@attribute Vaccum_Residue_heavier_hydrocarbons {AVERAGE,BAD,GOOD}
+@attribute 'Olefin Polymerization process technology_C3 C4 olefin feed' {AVERAGE,BAD,GOOD}
+@attribute 'Crude_Oil_boiling point' {AVERAGE,BAD,GOOD}
+@attribute 'Crude Oil_ASTM distillation' {AVERAGE,BAD,GOOD}
+@attribute 'Furnance_Fuel Oil' {AVERAGE,BAD,GOOD}
+@attribute Cracking_SideChainedAromatics_ChainedAromatics {AVERAGE,BAD,GOOD}
+@attribute 'Hydrogen Production_Methane Reforming' {AVERAGE,BAD,GOOD}
+@attribute 'Thermal cracking_Temp' {AVERAGE,BAD,GOOD}
+@attribute 'Thermal cracking_Pressure' {AVERAGE,BAD,GOOD}
+@attribute Coking_Feed {AVERAGE,BAD,GOOD}
+@attribute 'Petroleum refnery_hydrocarbon balances' {AVERAGE,BAD,GOOD}
+@attribute Crude_Oil_density {AVERAGE,BAD,GOOD}
+@attribute Hydrotreating_Organic_sulphur_compounds {AVERAGE,BAD,GOOD}
+@attribute 'Crude Oil_API gravity' {AVERAGE,BAD,GOOD}
+@attribute GasProcessing_Methane {AVERAGE,BAD,GOOD}
+@attribute Condensor_naphtha {AVERAGE,BAD,GOOD}
+@attribute 'Hydrogen Production Technology_Sulphur' {AVERAGE,BAD,GOOD}
+@attribute Overall_Refinery_Performance {GOOD,BAD,AVERAGE}
+
+@data
+AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,?
+BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,?
+GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,?
+AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,?
+BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,?

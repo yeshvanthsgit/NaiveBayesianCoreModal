@@ -1,9 +1,12 @@
 package com.mkyong.core;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +21,13 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.core.Attribute;
-import weka.core.Debug.Random;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.CSVLoader;
 import weka.core.converters.ConverterUtils.DataSource;
+import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.Standardize;
 
 public class RefinaryLevelPredictor {
 	private static final String PATH_TO_SAVE_UPDATED_REFINERY = "C:/Users/rsriramakavacham/Desktop/AI/Latest/RefineryAnalyticServiceFI/outputRefinaryPred.json";
@@ -34,6 +38,7 @@ public class RefinaryLevelPredictor {
 	private static final String REFINARY_TRAIN_DATA_CSV = "C:\\Users\\rsriramakavacham\\Desktop\\Oil\\OilRefinaryData.csv";
 	private static final String REFINERY_TEST_DATA_URL = "http://localhost:8082/refinery/fetchData/TestDB/Refinary";
 	private static final String REFINERY_TRAIN_DATA_URL = "http://localhost:8082/refinery/fetchData/TrainDB/Refinary";
+	static List<String> attributesList = null;
 
 	public static void main(String[] args) throws Exception {
 		try {
@@ -80,7 +85,7 @@ public class RefinaryLevelPredictor {
 
 			
 			convertCsvToArff(pastHistoryCsvFile, pastHistoryArffFile, predictableCsvFile, predictableArffFile);
-
+			
 			NaiveBayes nb = modalBuildingAndEvaluation();
 
 			Instances testdata = loadTestDataToPredict();
@@ -97,6 +102,8 @@ public class RefinaryLevelPredictor {
 		loader.setSource(new File(excelPath));
 		Instances data = loader.getDataSet();
 		
+		attributesList = new ArrayList<String>();
+		
 
 		ReadConfig rc = new ReadConfig(); 
 		for(String attr : rc.getNodeAttributes()){
@@ -105,14 +112,24 @@ public class RefinaryLevelPredictor {
 			}
 		}
 		
-//		ReplaceMissingValues m_ReplaceMissingValues = new ReplaceMissingValues();
-//		m_ReplaceMissingValues.setInputFormat(data);
-//		data = Filter.useFilter(data, m_ReplaceMissingValues);
 		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(arffFileName));
 		writer.write(data.toString());
 		writer.flush();
 		writer.close();
+		
+		BufferedReader b = new BufferedReader(new FileReader(arffFileName));
+
+        String readLine = "";
+
+        System.out.println("Reading file using Buffered Reader");
+
+        while ((readLine = b.readLine()) != null) {
+        	if(readLine.contains("@attribute")){
+        		System.out.println(readLine);
+        		attributesList.add(readLine);
+        	}
+        }
 	}
 
 	private static void generateArffCurrentFiles(String excelPath, String arffFileName) {
@@ -129,21 +146,44 @@ public class RefinaryLevelPredictor {
 				}
 			}
 			
-//			ReplaceMissingValues m_ReplaceMissingValues = new ReplaceMissingValues();
-//			m_ReplaceMissingValues.setInputFormat(data);
-//			data = Filter.useFilter(data, m_ReplaceMissingValues);
-			
 			FastVector attVals = new FastVector();
 			attVals.addElement("GOOD");
 			attVals.addElement("BAD");
 			attVals.addElement("AVERAGE");
 			Attribute attribute = new Attribute("Overall_Refinery_Performance", attVals);
 			data.insertAttributeAt(attribute, data.numAttributes());
-
-			BufferedWriter writer = new BufferedWriter(new FileWriter(arffFileName));
+			
+			BufferedWriter writer = new BufferedWriter(new FileWriter("sampleTrainArff.arff"));
 			writer.write(data.toString());
 			writer.flush();
 			writer.close();
+			String s;
+		    String totalStr = "";
+		    int count = 0;
+			
+		    BufferedReader b = new BufferedReader(new FileReader("sampleTrainArff.arff"));
+
+            String readLine = "";
+
+            System.out.println("Reading file using Buffered Reader");
+
+            while ((readLine = b.readLine()) != null) {
+            	if(readLine.contains("@attribute")){
+            		totalStr += attributesList.get(count) + "\n";
+            		count++;
+            	}else{
+            		totalStr += readLine + "\n";
+            	}
+                
+            }
+			
+			BufferedWriter writer1 = new BufferedWriter(new FileWriter(arffFileName));
+			writer1.write(totalStr);
+			writer1.flush();
+			writer1.close();
+			
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

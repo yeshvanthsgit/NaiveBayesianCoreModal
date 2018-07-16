@@ -1,13 +1,16 @@
 package com.mkyong.core;
+
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.json.JSONException;
 import org.json.simple.parser.ParseException;
@@ -26,25 +29,48 @@ import weka.core.converters.CSVLoader;
 import weka.core.converters.ConverterUtils.DataSource;
 
 public class RegionLevelPredictor {
-	
+
 	private static final String TRAIN_DB_REGION_URL = "http://localhost:8082/refinery/fetchData/TrainDB/Region";
 	private static final String TEST_DB_REGION_URL = "http://localhost:8082/refinery/fetchData/TestDB/Region";
 	private static final String PATH_TO_SAVE_UPDATED_REGION = "C:/Users/rsriramakavacham/Desktop/AI/Latest/RefineryAnalyticServiceFI/outputRegionPred.json";
 	private static final String REGION_TEST_CSV = "C:\\Users\\rsriramakavacham\\Desktop\\Oil\\region.csv";
 	private static final String REGION_TRAIN_CSV = "C:\\Users\\rsriramakavacham\\Desktop\\Oil\\regionPast.csv";
 	private static final String UPDATED_REGION_URL = "http://localhost:8082/refinery/updateData/TestDB/Region";
+	static List<String> regionAttributesList = null;
+	
+	public static void main(String[] args) throws Exception{
+		generateRegionCsvs();
+		String pastHistoryCsvFile = REGION_TRAIN_CSV;
+		String pastHistoryArffFile = "regionPast.arff ";
+
+		String predictableCsvFile = REGION_TEST_CSV;
+		String predictableArffFile = "regionActual.arff";
+
+		File input = new File(predictableCsvFile);
+		File output = new File("outputRegion.json");
+
+		CsvSchema csvSchema = CsvSchema.builder().setUseHeader(true).build();
+		CsvMapper csvMapper = new CsvMapper();
+		ObjectMapper mapper = new ObjectMapper();
+
+		List<Object> readAll = csvMapper.readerFor(Map.class).with(csvSchema).readValues(input).readAll();
+
+		mapper.writerWithDefaultPrettyPrinter().writeValue(output, readAll);
+
+		convertCsvToArff(pastHistoryCsvFile, pastHistoryArffFile, predictableCsvFile, predictableArffFile);
+	}
 
 	public static void predictRegion() throws Exception {
 		try {
-			
+
 			generateRegionCsvs();
-			
+
 			String pastHistoryCsvFile = REGION_TRAIN_CSV;
 			String pastHistoryArffFile = "regionPast.arff ";
-			
+
 			String predictableCsvFile = REGION_TEST_CSV;
 			String predictableArffFile = "regionActual.arff";
-			
+
 			File input = new File(predictableCsvFile);
 			File output = new File("outputRegion.json");
 
@@ -56,7 +82,6 @@ public class RegionLevelPredictor {
 
 			mapper.writerWithDefaultPrettyPrinter().writeValue(output, readAll);
 
-			
 			convertCsvToArff(pastHistoryCsvFile, pastHistoryArffFile, predictableCsvFile, predictableArffFile);
 
 			NaiveBayes nb = modalBuildingAndEvaluation();
@@ -64,34 +89,47 @@ public class RegionLevelPredictor {
 			Instances testdata = loadTestDataToPredict();
 
 			predictFromNativeBayesModal(testdata, nb, readAll, mapper);
-			
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	private static void generateRegionCsvs() throws FileNotFoundException, JSONException, IOException, ParseException{
+
+	private static void generateRegionCsvs() throws FileNotFoundException, JSONException, IOException, ParseException {
 		JsonCsvUtils jsonCsvUtils = new JsonCsvUtilsImpl();
-    	jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(TRAIN_DB_REGION_URL), REGION_TRAIN_CSV);
-    	jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(TEST_DB_REGION_URL), REGION_TEST_CSV);
+		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(TRAIN_DB_REGION_URL), REGION_TRAIN_CSV);
+		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(TEST_DB_REGION_URL), REGION_TEST_CSV);
 	}
 
 	private static void generateArffPastFiles(String excelPath, String arffFileName) throws IOException {
 		CSVLoader loader = new CSVLoader();
 		loader.setSource(new File(excelPath));
 		Instances data = loader.getDataSet();
-		ReadConfig rc = new ReadConfig(); 
-		for(String attr : rc.getRegionAttributes()){
-			if(data.attribute(attr) != null){
-				data.deleteAttributeAt(data.attribute(attr).index());	
+		ReadConfig rc = new ReadConfig();
+		for (String attr : rc.getRegionAttributes()) {
+			if (data.attribute(attr) != null) {
+				data.deleteAttributeAt(data.attribute(attr).index());
 			}
 		}
 		BufferedWriter writer = new BufferedWriter(new FileWriter(arffFileName));
 		writer.write(data.toString());
 		writer.flush();
 		writer.close();
+
+		regionAttributesList = new ArrayList<String>();
+
+		BufferedReader b = new BufferedReader(new FileReader(arffFileName));
+
+		String readLine = "";
+
+		System.out.println("Reading file using Buffered Reader");
+
+		while ((readLine = b.readLine()) != null) {
+			if (readLine.contains("@attribute")) {
+				System.out.println(readLine);
+				regionAttributesList.add(readLine);
+			}
+		}
 	}
 
 	private static void generateArffCurrentFiles(String excelPath, String arffFileName) {
@@ -101,10 +139,10 @@ public class RegionLevelPredictor {
 			loader.setSource(new File(excelPath));
 			Instances data = loader.getDataSet();
 
-			ReadConfig rc = new ReadConfig(); 
-			for(String attr : rc.getRegionAttributes1()){
-				if(data.attribute(attr) != null){
-					data.deleteAttributeAt(data.attribute(attr).index());	
+			ReadConfig rc = new ReadConfig();
+			for (String attr : rc.getRegionAttributes1()) {
+				if (data.attribute(attr) != null) {
+					data.deleteAttributeAt(data.attribute(attr).index());
 				}
 			}
 
@@ -115,10 +153,34 @@ public class RegionLevelPredictor {
 			Attribute attribute = new Attribute("Overall_Region_Performance", attVals);
 			data.insertAttributeAt(attribute, data.numAttributes());
 
-			BufferedWriter writer = new BufferedWriter(new FileWriter(arffFileName));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("sampleTrainArff1.arff"));
 			writer.write(data.toString());
 			writer.flush();
 			writer.close();
+			String s;
+		    String totalStr = "";
+		    int count = 0;
+			
+		    BufferedReader b = new BufferedReader(new FileReader("sampleTrainArff1.arff"));
+
+            String readLine = "";
+
+            System.out.println("Reading file using Buffered Reader");
+
+            while ((readLine = b.readLine()) != null) {
+            	if(readLine.contains("@attribute")){
+            		totalStr += regionAttributesList.get(count) + "\n";
+            		count++;
+            	}else{
+            		totalStr += readLine + "\n";
+            	}
+                
+            }
+			
+			BufferedWriter writer1 = new BufferedWriter(new FileWriter(arffFileName));
+			writer1.write(totalStr);
+			writer1.flush();
+			writer1.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -152,7 +214,7 @@ public class RegionLevelPredictor {
 		NaiveBayes nb = new NaiveBayes();
 		nb.buildClassifier(ins);
 		Evaluation eval_train = new Evaluation(ins);
-	    eval_train.evaluateModel(nb,ins);
+		eval_train.evaluateModel(nb, ins);
 		return nb;
 	}
 
@@ -171,42 +233,42 @@ public class RegionLevelPredictor {
 		}
 		File outputPred = new File(PATH_TO_SAVE_UPDATED_REGION);
 		mapper.writerWithDefaultPrettyPrinter().writeValue(outputPred, readAll);
-		
-		JsonReader.postMultiPartFile(UPDATED_REGION_URL, PATH_TO_SAVE_UPDATED_REGION);
-        //PersistJsonToMongo.mongoJsonInsert(jsonArray, "RegionDB");
-	}
-	
-	private static NaiveBayes modalBuildingAndEvaluation() throws Exception{
-		DataSource source = new DataSource("regionPast.arff");
-		Instances dataset = source.getDataSet();	
-		//set class index to the last attribute
-		dataset.setClassIndex(dataset.numAttributes()-1);
 
-		//create the classifier
+		JsonReader.postMultiPartFile(UPDATED_REGION_URL, PATH_TO_SAVE_UPDATED_REGION);
+		// PersistJsonToMongo.mongoJsonInsert(jsonArray, "RegionDB");
+	}
+
+	private static NaiveBayes modalBuildingAndEvaluation() throws Exception {
+		DataSource source = new DataSource("regionPast.arff");
+		Instances dataset = source.getDataSet();
+		// set class index to the last attribute
+		dataset.setClassIndex(dataset.numAttributes() - 1);
+
+		// create the classifier
 		NaiveBayes nb = new NaiveBayes();
 		nb.buildClassifier(dataset);
 
-//		int seed = 1;
-//		int folds = 5;
-//		// randomize data
-//		Random rand = new Random(seed);
-//		//create random dataset
-//		Instances randData = new Instances(dataset);
-//		randData.randomize(rand);
-//		//stratify	    
-//		if (randData.classAttribute().isNominal())
-//			randData.stratify(folds);
-//
-//		// perform cross-validation	    	    
-//		for (int n = 0; n < folds; n++) {
-//			Evaluation eval = new Evaluation(randData);
-//			//get the folds	      
-//			Instances train = randData.trainCV(folds, n);
-//			Instances test = randData.testCV(folds, n);	      
-//			// build and evaluate classifier	     
-//			nb.buildClassifier(train);
-//			eval.evaluateModel(nb, test);
-//		}
+		// int seed = 1;
+		// int folds = 5;
+		// // randomize data
+		// Random rand = new Random(seed);
+		// //create random dataset
+		// Instances randData = new Instances(dataset);
+		// randData.randomize(rand);
+		// //stratify
+		// if (randData.classAttribute().isNominal())
+		// randData.stratify(folds);
+		//
+		// // perform cross-validation
+		// for (int n = 0; n < folds; n++) {
+		// Evaluation eval = new Evaluation(randData);
+		// //get the folds
+		// Instances train = randData.trainCV(folds, n);
+		// Instances test = randData.testCV(folds, n);
+		// // build and evaluate classifier
+		// nb.buildClassifier(train);
+		// eval.evaluateModel(nb, test);
+		// }
 		return nb;
 	}
 

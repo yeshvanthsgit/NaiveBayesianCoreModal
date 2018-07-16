@@ -111,7 +111,7 @@ public class PersistJsonToMongo {
 							BasicDBObject searchQuery1 = new BasicDBObject();
 							searchQuery1.put("Site_Name", data);
 
-							DBCursor cursor1 = table.find(searchQuery1);
+							DBCursor cursor1 = table1.find(searchQuery1);
 							
 							while (cursor1.hasNext()) {
 								DBObject ob = cursor1.next();

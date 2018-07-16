@@ -1,9 +1,8 @@
-@relation regionPast
+@relation region
 
 @attribute 'Region_Risk factors' {GOOD,BAD,AVERAGE}
 @attribute 'Region_project delivery time' {GOOD,BAD,AVERAGE}
 @attribute Region_area {GOOD,BAD,AVERAGE}
-@attribute Overall_Region_Performance {GOOD,BAD,AVERAGE}
 @attribute 'Region_Legal Clearance' {GOOD,BAD,AVERAGE}
 @attribute 'Region_Permits and approvals' {GOOD,BAD,AVERAGE}
 @attribute 'Region_Total Turnover' {GOOD,BAD,AVERAGE}
@@ -14,8 +13,9 @@
 @attribute Region_Licence {GOOD,BAD,AVERAGE}
 @attribute 'Region_National Revenue' {GOOD,BAD,AVERAGE}
 @attribute 'Region_Refinery Configuration' {GOOD,BAD,AVERAGE}
+@attribute Overall_Region_Performance {GOOD,BAD,AVERAGE}
 
 @data
-GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD
-BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD
-AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE
+GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,GOOD,?
+BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,BAD,?
+AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,AVERAGE,?
