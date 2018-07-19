@@ -22,7 +22,7 @@ public class ReadConfig {
 	public void loadProperties(){
 		try {
 			prop = new Properties();
-			prop.load(new FileInputStream("C:/Users/rsriramakavacham/Desktop/AI/NaiveBayesianCoreModal/config1.properties"));
+			prop.load(new FileInputStream("C:/FM/Bayesian/FInal project/NaiveBayesianCoreModal/config1.properties"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

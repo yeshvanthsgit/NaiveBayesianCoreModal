@@ -30,12 +30,12 @@ import weka.core.converters.ConverterUtils.DataSource;
 
 public class RegionLevelPredictor {
 
-	private static final String TRAIN_DB_REGION_URL = "http://localhost:8082/refinery/fetchData/TrainDB/Region";
-	private static final String TEST_DB_REGION_URL = "http://localhost:8082/refinery/fetchData/TestDB/Region";
-	private static final String PATH_TO_SAVE_UPDATED_REGION = "C:/Users/rsriramakavacham/Desktop/AI/Latest/RefineryAnalyticServiceFI/outputRegionPred.json";
-	private static final String REGION_TEST_CSV = "C:\\Users\\rsriramakavacham\\Desktop\\Oil\\region.csv";
-	private static final String REGION_TRAIN_CSV = "C:\\Users\\rsriramakavacham\\Desktop\\Oil\\regionPast.csv";
-	private static final String UPDATED_REGION_URL = "http://localhost:8082/refinery/updateData/TestDB/Region";
+	private static final String TRAIN_DB_REGION_URL = "http://ushydykumarbar1:8082/refinery/fetchData/TrainDB/Region";
+	private static final String TEST_DB_REGION_URL = "http://ushydykumarbar1:8082/refinery/fetchData/TestDB/Region";
+	private static final String PATH_TO_SAVE_UPDATED_REGION = "C:/FM/Bayesian/FInal project/RefineryAnalyticServiceFI/outputRegionPred.json";
+	private static final String REGION_TEST_CSV = "C:\\FM\\Bayesian\\FInal project\\region.csv";
+	private static final String REGION_TRAIN_CSV = "C:\\FM\\Bayesian\\FInal project\\regionPast.csv";
+	private static final String UPDATED_REGION_URL = "http://ushydykumarbar1:8082/refinery/updateData/TestDB/Region";
 	static List<String> regionAttributesList = null;
 	
 	public static void main(String[] args) throws Exception{

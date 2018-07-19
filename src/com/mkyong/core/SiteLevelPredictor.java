@@ -25,11 +25,11 @@ import weka.core.converters.CSVLoader;
 import weka.core.converters.ConverterUtils.DataSource;
 
 public class SiteLevelPredictor {
-	private static final String UPDATE_DATA_SITE = "http://localhost:8082/refinery/updateData/TestDB/Site";
-	private static final String SAVE_UPDATED_JSON = "C:/Users/rsriramakavacham/Desktop/AI/Latest/RefineryAnalyticServiceFI/outputSitePred.json";
-	private static final String pastHistoryCsvFile = "C:\\Users\\rsriramakavacham\\Desktop\\Oil\\sitePast.csv ";
+	private static final String UPDATE_DATA_SITE = "http://ushydykumarbar1:8082/refinery/updateData/TestDB/Site";
+	private static final String SAVE_UPDATED_JSON = "C:/FM/Bayesian/FInal project/RefineryAnalyticServiceFI/outputSitePred.json";
+	private static final String pastHistoryCsvFile = "C:\\FM\\Bayesian\\FInal project\\sitePast.csv ";
 	private static final String pastHistoryArffFile = "sitePast.arff ";
-	private static final String predictableCsvFile = "C:\\Users\\rsriramakavacham\\Desktop\\Oil\\site.csv ";
+	private static final String predictableCsvFile = "C:\\FM\\Bayesian\\FInal project\\site.csv ";
 	private static final String predictableArffFile = "siteActual.arff";
 	static List<String> siteAttributesList = null;
 
@@ -63,9 +63,9 @@ public class SiteLevelPredictor {
 
 	private static void generateCsvs() throws Exception {
 		JsonCsvUtils jsonCsvUtils = new JsonCsvUtilsImpl();
-		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://localhost:8082/refinery/fetchData/TrainDB/Site"),
+		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://ushydykumarbar1:8082/refinery/fetchData/TrainDB/Site"),
 				pastHistoryCsvFile);
-		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://localhost:8082/refinery/fetchData/TestDB/Site"),
+		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://ushydykumarbar1:8082/refinery/fetchData/TestDB/Site"),
 				predictableCsvFile);
 	}
 

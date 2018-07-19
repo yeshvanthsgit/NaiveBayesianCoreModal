@@ -9,7 +9,7 @@ public class JSON2CSV {
     public static void main(String myHelpers[]) throws ParseException{
         try {
         	JsonCsvUtils jsonCsvUtils = new JsonCsvUtilsImpl();
-        	jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://localhost:8544/refinery/fetchData/TrainDB/Refinary"), "C:/Users/rsriramakavacham/Desktop/AI/NativeBayesModal/fromJson.csv");
+        	jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://localhost:8544/refinery/fetchData/TrainDB/Refinary"), "C:/FM/Bayesian/FInal project/fromJson.csv");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {

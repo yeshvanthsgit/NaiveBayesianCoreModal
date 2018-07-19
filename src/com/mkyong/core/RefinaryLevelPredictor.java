@@ -30,14 +30,14 @@ import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Standardize;
 
 public class RefinaryLevelPredictor {
-	private static final String PATH_TO_SAVE_UPDATED_REFINERY = "C:/Users/rsriramakavacham/Desktop/AI/Latest/RefineryAnalyticServiceFI/outputRefinaryPred.json";
-	private static final String UPDATE_DATA_TEST_DB_REFINARY = "http://localhost:8082/refinery/updateData/TestDB/Refinary";
+	private static final String PATH_TO_SAVE_UPDATED_REFINERY = "C:/FM/Bayesian/FInal project/RefineryAnalyticServiceFI/outputRefinaryPred.json";
+	private static final String UPDATE_DATA_TEST_DB_REFINARY = "http://ushydykumarbar1:8082/refinery/updateData/TestDB/Refinary";
 	private static final String REFINARY_DATA_TEST_ARFF = "OilRefinaryDataActual.arff";
 	private static final String REFINARY_DATA_TRAIN_ARFF = "OilRefinaryDataPast.arff";
-	private static final String REFINARY_TEST_DATA_CSV = "C:\\Users\\rsriramakavacham\\Desktop\\Oil\\actualOilRefinaryPrediction.csv";
-	private static final String REFINARY_TRAIN_DATA_CSV = "C:\\Users\\rsriramakavacham\\Desktop\\Oil\\OilRefinaryData.csv";
-	private static final String REFINERY_TEST_DATA_URL = "http://localhost:8082/refinery/fetchData/TestDB/Refinary";
-	private static final String REFINERY_TRAIN_DATA_URL = "http://localhost:8082/refinery/fetchData/TrainDB/Refinary";
+	private static final String REFINARY_TEST_DATA_CSV = "C:\\FM\\Bayesian\\FInal project\\actualOilRefinaryPrediction.csv";
+	private static final String REFINARY_TRAIN_DATA_CSV = "C:\\FM\\Bayesian\\FInal project\\OilRefinaryData.csv";
+	private static final String REFINERY_TEST_DATA_URL = "http://ushydykumarbar1:8082/refinery/fetchData/TestDB/Refinary";
+	private static final String REFINERY_TRAIN_DATA_URL = "http://ushydykumarbar1:8082/refinery/fetchData/TrainDB/Refinary";
 	static List<String> attributesList = null;
 
 	public static void main(String[] args) throws Exception {
