@@ -6,29 +6,29 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/weka-stable-3.6.8.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/jackson-databind-2.8.9.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/jackson-dataformat-csv-2.8.9.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/jackson-core-2.8.9.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/jackson-annotations-2.8.0.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/sfm-converter-3.7-jdk16.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/sfm-csv-3.7.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/sfm-map-3.7-jdk16.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/sfm-reflect-3.7-jdk16.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/sfm-tuples-3.7-jdk16.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/sfm-util-3.7-jdk16.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/beanio-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/java-cup-11b.jar"/>
-	<classpathentry kind="lib" path="C:/FM/Bayesian/FInal project/modeljars/java-cup-11b-runtime.jar"/>
+	<classpathentry kind="lib" path="modeljars/weka-stable-3.6.8.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="modeljars/beanio-2.0.1.jar"/>
+	<classpathentry kind="lib" path="modeljars/jackson-annotations-2.8.0.jar"/>
+	<classpathentry kind="lib" path="modeljars/jackson-core-2.8.9.jar"/>
+	<classpathentry kind="lib" path="modeljars/jackson-databind-2.8.9.jar"/>
+	<classpathentry kind="lib" path="modeljars/jackson-dataformat-csv-2.8.9.jar"/>
+	<classpathentry kind="lib" path="modeljars/java-cup-11b-runtime.jar"/>
+	<classpathentry kind="lib" path="modeljars/java-cup-11b.jar"/>
+	<classpathentry kind="lib" path="modeljars/sfm-converter-3.7-jdk16.jar"/>
+	<classpathentry kind="lib" path="modeljars/sfm-csv-3.7.jar"/>
+	<classpathentry kind="lib" path="modeljars/sfm-map-3.7-jdk16.jar"/>
+	<classpathentry kind="lib" path="modeljars/sfm-reflect-3.7-jdk16.jar"/>
+	<classpathentry kind="lib" path="modeljars/sfm-tuples-3.7-jdk16.jar"/>
+	<classpathentry kind="lib" path="modeljars/sfm-util-3.7-jdk16.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
