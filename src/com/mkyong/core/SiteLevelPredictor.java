@@ -3,13 +3,16 @@ package com.mkyong.core;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -25,12 +28,15 @@ import weka.core.converters.CSVLoader;
 import weka.core.converters.ConverterUtils.DataSource;
 
 public class SiteLevelPredictor {
-	private static final String UPDATE_DATA_SITE = "http://ushydykumarbar1:8082/refinery/updateData/TestDB/Site";
-	private static final String SAVE_UPDATED_JSON = "C:/FM/Bayesian/FInal project/RefineryAnalyticServiceFI/outputSitePred.json";
-	private static final String pastHistoryCsvFile = "C:\\FM\\Bayesian\\FInal project\\sitePast.csv ";
-	private static final String pastHistoryArffFile = "sitePast.arff ";
-	private static final String predictableCsvFile = "C:\\FM\\Bayesian\\FInal project\\site.csv ";
-	private static final String predictableArffFile = "siteActual.arff";
+	private static String UPDATE_DATA_SITE = "";
+	private static String PATH_TO_SAVE_UPDATED_SITE = "";
+	private static String pastHistoryCsvFile = "";
+	private static String PAST_HISTORY_ARFF_FILE = "";
+	private static String predictableCsvFile = "";
+	private static String PREDICTABLE_ARFF_FILE = "";
+	private static String SITE_TEST_DATA_URL = "";
+	private static String SITE_TRAIN_DATA_URL = "";
+	private static String OUTPUT_SITE_JSON = "";
 	static List<String> siteAttributesList = null;
 
 	public static void main(String[] args) throws Exception {
@@ -38,7 +44,7 @@ public class SiteLevelPredictor {
 			generateCsvs();
 			
 			File input = new File(predictableCsvFile);
-			File output = new File("outputSite.json");
+			File output = new File("OUTPUT_SITE_JSON");
 
 			CsvSchema csvSchema = CsvSchema.builder().setUseHeader(true).build();
 			CsvMapper csvMapper = new CsvMapper();
@@ -48,7 +54,7 @@ public class SiteLevelPredictor {
 
 			mapper.writerWithDefaultPrettyPrinter().writeValue(output, readAll);
 
-			convertCsvToArff(pastHistoryCsvFile, pastHistoryArffFile, predictableCsvFile, predictableArffFile);
+			convertCsvToArff(pastHistoryCsvFile, PAST_HISTORY_ARFF_FILE, predictableCsvFile, PREDICTABLE_ARFF_FILE);
 
 //			NaiveBayes nb = modalBuildingAndEvaluation();
 //
@@ -62,10 +68,26 @@ public class SiteLevelPredictor {
 	}
 
 	private static void generateCsvs() throws Exception {
+		Properties prop = null;
+		prop = new Properties();
+		InputStream is = SiteLevelPredictor.class.getResourceAsStream("./config1.properties");
+		prop.load(is);
+		UPDATE_DATA_SITE = prop.getProperty("UpdateTestDataSite");
+		PATH_TO_SAVE_UPDATED_SITE = prop.getProperty("PathToSaveUpdatedSite");
+		pastHistoryCsvFile = prop.getProperty("pastHistorySiteCsvFile");
+		predictableCsvFile = prop.getProperty("predictableSiteCsvFile");
+		SITE_TEST_DATA_URL = prop.getProperty("SiteTestDataURL");
+		SITE_TRAIN_DATA_URL = prop.getProperty("SiteTrainDataURL");
+		PAST_HISTORY_ARFF_FILE = prop.getProperty("pastHistorysiteArffFile");
+		PREDICTABLE_ARFF_FILE = prop.getProperty("predictableSiteArffFile");
+		OUTPUT_SITE_JSON =  prop.getProperty("OutputSiteJson");
+		
+		
+		
 		JsonCsvUtils jsonCsvUtils = new JsonCsvUtilsImpl();
-		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://ushydykumarbar1:8082/refinery/fetchData/TrainDB/Site"),
+		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(SITE_TRAIN_DATA_URL),
 				pastHistoryCsvFile);
-		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl("http://ushydykumarbar1:8082/refinery/fetchData/TestDB/Site"),
+		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(SITE_TEST_DATA_URL),
 				predictableCsvFile);
 	}
 
@@ -75,7 +97,7 @@ public class SiteLevelPredictor {
 			generateCsvs();
 
 			File input = new File(predictableCsvFile);
-			File output = new File("outputSite.json");
+			File output = new File("OUTPUT_SITE_JSON");
 
 			CsvSchema csvSchema = CsvSchema.builder().setUseHeader(true).build();
 			CsvMapper csvMapper = new CsvMapper();
@@ -85,7 +107,7 @@ public class SiteLevelPredictor {
 
 			mapper.writerWithDefaultPrettyPrinter().writeValue(output, readAll);
 
-			convertCsvToArff(pastHistoryCsvFile, pastHistoryArffFile, predictableCsvFile, predictableArffFile);
+			convertCsvToArff(pastHistoryCsvFile, PAST_HISTORY_ARFF_FILE, predictableCsvFile, PREDICTABLE_ARFF_FILE);
 
 			NaiveBayes nb = modalBuildingAndEvaluation();
 
@@ -190,7 +212,7 @@ public class SiteLevelPredictor {
 	}
 
 	private static Instances prepareFeaturesToBuildBayesModal() throws Exception {
-		DataSource source = new DataSource("sitePast.arff");
+		DataSource source = new DataSource(PAST_HISTORY_ARFF_FILE);
 		Instances traindata = source.getDataSet();
 		traindata.setClassIndex(traindata.numAttributes() - 1);
 		int numClasses = traindata.numClasses();
@@ -201,7 +223,7 @@ public class SiteLevelPredictor {
 	}
 
 	private static Instances loadTestDataToPredict() throws Exception {
-		DataSource source2 = new DataSource("siteActual.arff");
+		DataSource source2 = new DataSource(PREDICTABLE_ARFF_FILE);
 		Instances testdata = source2.getDataSet();
 		testdata.setClassIndex(testdata.numAttributes() - 1);
 		return testdata;
@@ -228,13 +250,13 @@ public class SiteLevelPredictor {
 			mapInfo.put("Overall_Site_Performance", predString);
 			mapInfo.put("Calculated_Site_Performance", predString);
 		}
-		File outputPred = new File(SAVE_UPDATED_JSON);
+		File outputPred = new File(PATH_TO_SAVE_UPDATED_SITE);
 		mapper.writerWithDefaultPrettyPrinter().writeValue(outputPred, readAll);
-		JsonReader.postMultiPartFile(UPDATE_DATA_SITE, SAVE_UPDATED_JSON);
+		JsonReader.postMultiPartFile(UPDATE_DATA_SITE, PATH_TO_SAVE_UPDATED_SITE);
 	}
 
 	private static NaiveBayes modalBuildingAndEvaluation() throws Exception {
-		DataSource source = new DataSource("sitePast.arff");
+		DataSource source = new DataSource(PAST_HISTORY_ARFF_FILE);
 		Instances dataset = source.getDataSet();
 		// set class index to the last attribute
 		dataset.setClassIndex(dataset.numAttributes() - 1);

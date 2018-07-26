@@ -2,14 +2,17 @@ package com.mkyong.core;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.json.JSONException;
 import org.json.simple.parser.ParseException;
@@ -30,14 +33,15 @@ import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Standardize;
 
 public class RefinaryLevelPredictor {
-	private static final String PATH_TO_SAVE_UPDATED_REFINERY = "C:/FM/Bayesian/FInal project/RefineryAnalyticServiceFI/outputRefinaryPred.json";
-	private static final String UPDATE_DATA_TEST_DB_REFINARY = "http://ushydykumarbar1:8082/refinery/updateData/TestDB/Refinary";
-	private static final String REFINARY_DATA_TEST_ARFF = "OilRefinaryDataActual.arff";
-	private static final String REFINARY_DATA_TRAIN_ARFF = "OilRefinaryDataPast.arff";
-	private static final String REFINARY_TEST_DATA_CSV = "C:\\FM\\Bayesian\\FInal project\\actualOilRefinaryPrediction.csv";
-	private static final String REFINARY_TRAIN_DATA_CSV = "C:\\FM\\Bayesian\\FInal project\\OilRefinaryData.csv";
-	private static final String REFINERY_TEST_DATA_URL = "http://ushydykumarbar1:8082/refinery/fetchData/TestDB/Refinary";
-	private static final String REFINERY_TRAIN_DATA_URL = "http://ushydykumarbar1:8082/refinery/fetchData/TrainDB/Refinary";
+	private static String PATH_TO_SAVE_UPDATED_REFINERY = "";
+	private static String UPDATE_DATA_TEST_DB_REFINARY = "";
+	private static String REFINARY_DATA_TEST_ARFF = "";
+	private static String REFINARY_DATA_TRAIN_ARFF = "";
+	private static String REFINARY_TEST_DATA_CSV = "";
+	private static String REFINARY_TRAIN_DATA_CSV = "";
+	private static String REFINERY_TEST_DATA_URL = "";
+	private static String REFINERY_TRAIN_DATA_URL = "";
+	private static String OUTPUT_REFINERY_JSON = "";
 	static List<String> attributesList = null;
 
 	public static void main(String[] args) throws Exception {
@@ -49,6 +53,20 @@ public class RefinaryLevelPredictor {
 	}
 	
 	public static void predict() throws Exception {
+		Properties prop = null;
+		prop = new Properties();
+		InputStream is = RefinaryLevelPredictor.class.getResourceAsStream("./config1.properties");
+		prop.load(is);
+		PATH_TO_SAVE_UPDATED_REFINERY = prop.getProperty("PathToSaveUpdatedRefinery");
+		UPDATE_DATA_TEST_DB_REFINARY = prop.getProperty("UpdateDataTestDBRefinery");
+		REFINARY_TEST_DATA_CSV = prop.getProperty("RefineryTestDataCSV");
+		REFINARY_TRAIN_DATA_CSV = prop.getProperty("RefineryTrainDataCSV");
+		REFINERY_TEST_DATA_URL = prop.getProperty("RefineryTestDataURL");
+		REFINERY_TRAIN_DATA_URL = prop.getProperty("RefineryTrainDataURL");
+		REFINARY_DATA_TEST_ARFF = prop.getProperty("OilRefinaryDataActual");
+		REFINARY_DATA_TRAIN_ARFF = prop.getProperty("OilRefinaryDataPast");
+		OUTPUT_REFINERY_JSON = prop.getProperty("OutputRefineryJson");
+
 		RegionLevelPredictor.predictRegion();
 		SiteLevelPredictor.predictSite();
 		predictRefinery();
@@ -73,7 +91,7 @@ public class RefinaryLevelPredictor {
 			String predictableArffFile = REFINARY_DATA_TEST_ARFF;
 			
 			File input = new File(predictableCsvFile);
-			File output = new File("output.json");
+			File output = new File(OUTPUT_REFINERY_JSON);
 
 			CsvSchema csvSchema = CsvSchema.builder().setUseHeader(true).build();
 			CsvMapper csvMapper = new CsvMapper();

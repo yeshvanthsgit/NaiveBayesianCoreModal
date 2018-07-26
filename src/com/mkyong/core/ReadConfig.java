@@ -3,6 +3,7 @@ package com.mkyong.core;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
@@ -22,7 +23,8 @@ public class ReadConfig {
 	public void loadProperties(){
 		try {
 			prop = new Properties();
-			prop.load(new FileInputStream("C:/FM/Bayesian/FInal project/NaiveBayesianCoreModal/config1.properties"));
+			InputStream is = RegionLevelPredictor.class.getResourceAsStream("./config1.properties");
+			prop.load(is);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -3,14 +3,17 @@ package com.mkyong.core;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.json.JSONException;
 import org.json.simple.parser.ParseException;
@@ -30,24 +33,26 @@ import weka.core.converters.ConverterUtils.DataSource;
 
 public class RegionLevelPredictor {
 
-	private static final String TRAIN_DB_REGION_URL = "http://ushydykumarbar1:8082/refinery/fetchData/TrainDB/Region";
-	private static final String TEST_DB_REGION_URL = "http://ushydykumarbar1:8082/refinery/fetchData/TestDB/Region";
-	private static final String PATH_TO_SAVE_UPDATED_REGION = "C:/FM/Bayesian/FInal project/RefineryAnalyticServiceFI/outputRegionPred.json";
-	private static final String REGION_TEST_CSV = "C:\\FM\\Bayesian\\FInal project\\region.csv";
-	private static final String REGION_TRAIN_CSV = "C:\\FM\\Bayesian\\FInal project\\regionPast.csv";
-	private static final String UPDATED_REGION_URL = "http://ushydykumarbar1:8082/refinery/updateData/TestDB/Region";
+	private static String TRAIN_DB_REGION_URL = "";
+	private static String TEST_DB_REGION_URL = "";
+	private static String PATH_TO_SAVE_UPDATED_REGION = "";
+	private static String REGION_TEST_CSV = "";
+	private static String REGION_TRAIN_CSV = "";
+	private static String UPDATED_REGION_URL = "";
+	private static String Past_History_Arff_File = "";
+	private static String PREDICTABLE_ARFF_FILE = "";
+	private static String OUTPUT_REGION_JSON = "";
 	static List<String> regionAttributesList = null;
 	
 	public static void main(String[] args) throws Exception{
 		generateRegionCsvs();
 		String pastHistoryCsvFile = REGION_TRAIN_CSV;
-		String pastHistoryArffFile = "regionPast.arff ";
+		
 
 		String predictableCsvFile = REGION_TEST_CSV;
-		String predictableArffFile = "regionActual.arff";
 
 		File input = new File(predictableCsvFile);
-		File output = new File("outputRegion.json");
+		File output = new File(OUTPUT_REGION_JSON);
 
 		CsvSchema csvSchema = CsvSchema.builder().setUseHeader(true).build();
 		CsvMapper csvMapper = new CsvMapper();
@@ -57,7 +62,7 @@ public class RegionLevelPredictor {
 
 		mapper.writerWithDefaultPrettyPrinter().writeValue(output, readAll);
 
-		convertCsvToArff(pastHistoryCsvFile, pastHistoryArffFile, predictableCsvFile, predictableArffFile);
+		convertCsvToArff(pastHistoryCsvFile, Past_History_Arff_File, predictableCsvFile, PREDICTABLE_ARFF_FILE);
 	}
 
 	public static void predictRegion() throws Exception {
@@ -66,13 +71,12 @@ public class RegionLevelPredictor {
 			generateRegionCsvs();
 
 			String pastHistoryCsvFile = REGION_TRAIN_CSV;
-			String pastHistoryArffFile = "regionPast.arff ";
+			
 
 			String predictableCsvFile = REGION_TEST_CSV;
-			String predictableArffFile = "regionActual.arff";
 
 			File input = new File(predictableCsvFile);
-			File output = new File("outputRegion.json");
+			File output = new File(OUTPUT_REGION_JSON);
 
 			CsvSchema csvSchema = CsvSchema.builder().setUseHeader(true).build();
 			CsvMapper csvMapper = new CsvMapper();
@@ -82,7 +86,7 @@ public class RegionLevelPredictor {
 
 			mapper.writerWithDefaultPrettyPrinter().writeValue(output, readAll);
 
-			convertCsvToArff(pastHistoryCsvFile, pastHistoryArffFile, predictableCsvFile, predictableArffFile);
+			convertCsvToArff(pastHistoryCsvFile, Past_History_Arff_File, predictableCsvFile, PREDICTABLE_ARFF_FILE);
 
 			NaiveBayes nb = modalBuildingAndEvaluation();
 
@@ -96,6 +100,22 @@ public class RegionLevelPredictor {
 	}
 
 	private static void generateRegionCsvs() throws FileNotFoundException, JSONException, IOException, ParseException {
+		Properties prop = null;
+		prop = new Properties();
+		InputStream is = RegionLevelPredictor.class.getResourceAsStream("./config1.properties");
+		prop.load(is);
+		TRAIN_DB_REGION_URL = prop.getProperty("RegionTrainDataURL");
+		TEST_DB_REGION_URL = prop.getProperty("RegionTestDataURL");
+		PATH_TO_SAVE_UPDATED_REGION = prop.getProperty("PathToSaveUpdatedRegion");
+		UPDATED_REGION_URL = prop.getProperty("UpdateTestDataRegion");
+		REGION_TEST_CSV = prop.getProperty("predictableRegionCsvFile");
+		REGION_TRAIN_CSV= prop.getProperty("pastHistoryRegionCsvFile");
+		Past_History_Arff_File= prop.getProperty("PastHistoryArffFile");
+		PREDICTABLE_ARFF_FILE = prop.getProperty("RegionActulaArffFile");
+		OUTPUT_REGION_JSON = prop.getProperty("OutputRegionJson");
+		
+		
+		
 		JsonCsvUtils jsonCsvUtils = new JsonCsvUtilsImpl();
 		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(TRAIN_DB_REGION_URL), REGION_TRAIN_CSV);
 		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(TEST_DB_REGION_URL), REGION_TEST_CSV);
@@ -193,7 +213,7 @@ public class RegionLevelPredictor {
 	}
 
 	private static Instances prepareFeaturesToBuildBayesModal() throws Exception {
-		DataSource source = new DataSource("regionPast.arff");
+		DataSource source = new DataSource(Past_History_Arff_File);
 		Instances traindata = source.getDataSet();
 		traindata.setClassIndex(traindata.numAttributes() - 1);
 		int numClasses = traindata.numClasses();
@@ -204,7 +224,7 @@ public class RegionLevelPredictor {
 	}
 
 	private static Instances loadTestDataToPredict() throws Exception {
-		DataSource source2 = new DataSource("regionActual.arff");
+		DataSource source2 = new DataSource(PREDICTABLE_ARFF_FILE);
 		Instances testdata = source2.getDataSet();
 		testdata.setClassIndex(testdata.numAttributes() - 1);
 		return testdata;
@@ -239,7 +259,7 @@ public class RegionLevelPredictor {
 	}
 
 	private static NaiveBayes modalBuildingAndEvaluation() throws Exception {
-		DataSource source = new DataSource("regionPast.arff");
+		DataSource source = new DataSource(Past_History_Arff_File);
 		Instances dataset = source.getDataSet();
 		// set class index to the last attribute
 		dataset.setClassIndex(dataset.numAttributes() - 1);
