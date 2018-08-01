@@ -1,9 +1,10 @@
-package com.mkyong.core;
+package com.naivebayes.core;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,6 +14,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import org.json.JSONException;
+import org.json.simple.parser.ParseException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -27,24 +31,52 @@ import weka.core.Instances;
 import weka.core.converters.CSVLoader;
 import weka.core.converters.ConverterUtils.DataSource;
 
-public class SiteLevelPredictor {
-	private static String UPDATE_DATA_SITE = "";
-	private static String PATH_TO_SAVE_UPDATED_SITE = "";
-	private static String pastHistoryCsvFile = "";
-	private static String PAST_HISTORY_ARFF_FILE = "";
-	private static String predictableCsvFile = "";
+public class RegionLevelPredictor {
+
+	private static String TRAIN_DB_REGION_URL = "";
+	private static String TEST_DB_REGION_URL = "";
+	private static String PATH_TO_SAVE_UPDATED_REGION = "";
+	private static String REGION_TEST_CSV = "";
+	private static String REGION_TRAIN_CSV = "";
+	private static String UPDATED_REGION_URL = "";
+	private static String Past_History_Arff_File = "";
 	private static String PREDICTABLE_ARFF_FILE = "";
-	private static String SITE_TEST_DATA_URL = "";
-	private static String SITE_TRAIN_DATA_URL = "";
-	private static String OUTPUT_SITE_JSON = "";
-	static List<String> siteAttributesList = null;
+	private static String OUTPUT_REGION_JSON = "";
+	static List<String> regionAttributesList = null;
+	
+	public static void main(String[] args) throws Exception{
+		generateRegionCsvs();
+		String pastHistoryCsvFile = REGION_TRAIN_CSV;
+		
 
-	public static void main(String[] args) throws Exception {
+		String predictableCsvFile = REGION_TEST_CSV;
+
+		File input = new File(predictableCsvFile);
+		File output = new File(OUTPUT_REGION_JSON);
+
+		CsvSchema csvSchema = CsvSchema.builder().setUseHeader(true).build();
+		CsvMapper csvMapper = new CsvMapper();
+		ObjectMapper mapper = new ObjectMapper();
+
+		List<Object> readAll = csvMapper.readerFor(Map.class).with(csvSchema).readValues(input).readAll();
+
+		mapper.writerWithDefaultPrettyPrinter().writeValue(output, readAll);
+
+		convertCsvToArff(pastHistoryCsvFile, Past_History_Arff_File, predictableCsvFile, PREDICTABLE_ARFF_FILE);
+	}
+
+	public static void predictRegion() throws Exception {
 		try {
-			generateCsvs();
+
+			generateRegionCsvs();
+
+			String pastHistoryCsvFile = REGION_TRAIN_CSV;
 			
+
+			String predictableCsvFile = REGION_TEST_CSV;
+
 			File input = new File(predictableCsvFile);
-			File output = new File("OUTPUT_SITE_JSON");
+			File output = new File(OUTPUT_REGION_JSON);
 
 			CsvSchema csvSchema = CsvSchema.builder().setUseHeader(true).build();
 			CsvMapper csvMapper = new CsvMapper();
@@ -54,60 +86,7 @@ public class SiteLevelPredictor {
 
 			mapper.writerWithDefaultPrettyPrinter().writeValue(output, readAll);
 
-			convertCsvToArff(pastHistoryCsvFile, PAST_HISTORY_ARFF_FILE, predictableCsvFile, PREDICTABLE_ARFF_FILE);
-
-//			NaiveBayes nb = modalBuildingAndEvaluation();
-//
-//			Instances testdata = loadTestDataToPredict();
-//
-//			predictFromNativeBayesModal(testdata, nb, readAll, mapper);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static void generateCsvs() throws Exception {
-		Properties prop = null;
-		prop = new Properties();
-		InputStream is = SiteLevelPredictor.class.getResourceAsStream("./config1.properties");
-		prop.load(is);
-		UPDATE_DATA_SITE = prop.getProperty("UpdateTestDataSite");
-		PATH_TO_SAVE_UPDATED_SITE = prop.getProperty("PathToSaveUpdatedSite");
-		pastHistoryCsvFile = prop.getProperty("pastHistorySiteCsvFile");
-		predictableCsvFile = prop.getProperty("predictableSiteCsvFile");
-		SITE_TEST_DATA_URL = prop.getProperty("SiteTestDataURL");
-		SITE_TRAIN_DATA_URL = prop.getProperty("SiteTrainDataURL");
-		PAST_HISTORY_ARFF_FILE = prop.getProperty("pastHistorysiteArffFile");
-		PREDICTABLE_ARFF_FILE = prop.getProperty("predictableSiteArffFile");
-		OUTPUT_SITE_JSON =  prop.getProperty("OutputSiteJson");
-		
-		
-		
-		JsonCsvUtils jsonCsvUtils = new JsonCsvUtilsImpl();
-		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(SITE_TRAIN_DATA_URL),
-				pastHistoryCsvFile);
-		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(SITE_TEST_DATA_URL),
-				predictableCsvFile);
-	}
-
-	public static void predictSite() throws Exception {
-		try {
-
-			generateCsvs();
-
-			File input = new File(predictableCsvFile);
-			File output = new File("OUTPUT_SITE_JSON");
-
-			CsvSchema csvSchema = CsvSchema.builder().setUseHeader(true).build();
-			CsvMapper csvMapper = new CsvMapper();
-			ObjectMapper mapper = new ObjectMapper();
-
-			List<Object> readAll = csvMapper.readerFor(Map.class).with(csvSchema).readValues(input).readAll();
-
-			mapper.writerWithDefaultPrettyPrinter().writeValue(output, readAll);
-
-			convertCsvToArff(pastHistoryCsvFile, PAST_HISTORY_ARFF_FILE, predictableCsvFile, PREDICTABLE_ARFF_FILE);
+			convertCsvToArff(pastHistoryCsvFile, Past_History_Arff_File, predictableCsvFile, PREDICTABLE_ARFF_FILE);
 
 			NaiveBayes nb = modalBuildingAndEvaluation();
 
@@ -120,12 +99,34 @@ public class SiteLevelPredictor {
 		}
 	}
 
+	private static void generateRegionCsvs() throws FileNotFoundException, JSONException, IOException, ParseException {
+		Properties prop = null;
+		prop = new Properties();
+		InputStream is = RegionLevelPredictor.class.getResourceAsStream("./config1.properties");
+		prop.load(is);
+		TRAIN_DB_REGION_URL = prop.getProperty("RegionTrainDataURL");
+		TEST_DB_REGION_URL = prop.getProperty("RegionTestDataURL");
+		PATH_TO_SAVE_UPDATED_REGION = prop.getProperty("PathToSaveUpdatedRegion");
+		UPDATED_REGION_URL = prop.getProperty("UpdateTestDataRegion");
+		REGION_TEST_CSV = prop.getProperty("predictableRegionCsvFile");
+		REGION_TRAIN_CSV= prop.getProperty("pastHistoryRegionCsvFile");
+		Past_History_Arff_File= prop.getProperty("PastHistoryArffFile");
+		PREDICTABLE_ARFF_FILE = prop.getProperty("RegionActulaArffFile");
+		OUTPUT_REGION_JSON = prop.getProperty("OutputRegionJson");
+		
+		
+		
+		JsonCsvUtils jsonCsvUtils = new JsonCsvUtilsImpl();
+		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(TRAIN_DB_REGION_URL), REGION_TRAIN_CSV);
+		jsonCsvUtils.jsonToCsv(JsonReader.readJsonArrayFromUrl(TEST_DB_REGION_URL), REGION_TEST_CSV);
+	}
+
 	private static void generateArffPastFiles(String excelPath, String arffFileName) throws IOException {
 		CSVLoader loader = new CSVLoader();
 		loader.setSource(new File(excelPath));
 		Instances data = loader.getDataSet();
 		ReadConfig rc = new ReadConfig();
-		for (String attr : rc.getSiteAttributes()) {
+		for (String attr : rc.getRegionAttributes()) {
 			if (data.attribute(attr) != null) {
 				data.deleteAttributeAt(data.attribute(attr).index());
 			}
@@ -135,7 +136,7 @@ public class SiteLevelPredictor {
 		writer.flush();
 		writer.close();
 
-		siteAttributesList = new ArrayList<String>();
+		regionAttributesList = new ArrayList<String>();
 
 		BufferedReader b = new BufferedReader(new FileReader(arffFileName));
 
@@ -146,7 +147,7 @@ public class SiteLevelPredictor {
 		while ((readLine = b.readLine()) != null) {
 			if (readLine.contains("@attribute")) {
 				System.out.println(readLine);
-				siteAttributesList.add(readLine);
+				regionAttributesList.add(readLine);
 			}
 		}
 	}
@@ -159,9 +160,9 @@ public class SiteLevelPredictor {
 			Instances data = loader.getDataSet();
 
 			ReadConfig rc = new ReadConfig();
-			for (String attr11 : rc.getSiteAttributes1()) {
-				if (data.attribute(attr11) != null) {
-					data.deleteAttributeAt(data.attribute(attr11).index());
+			for (String attr : rc.getRegionAttributes1()) {
+				if (data.attribute(attr) != null) {
+					data.deleteAttributeAt(data.attribute(attr).index());
 				}
 			}
 
@@ -169,10 +170,10 @@ public class SiteLevelPredictor {
 			attVals.addElement("GOOD");
 			attVals.addElement("BAD");
 			attVals.addElement("AVERAGE");
-			Attribute attribute = new Attribute("Overall_Site_Performance", attVals);
+			Attribute attribute = new Attribute("Overall_Region_Performance", attVals);
 			data.insertAttributeAt(attribute, data.numAttributes());
 
-			BufferedWriter writer = new BufferedWriter(new FileWriter("sampleTrainArff2.arff"));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("sampleTrainArff1.arff"));
 			writer.write(data.toString());
 			writer.flush();
 			writer.close();
@@ -180,7 +181,7 @@ public class SiteLevelPredictor {
 		    String totalStr = "";
 		    int count = 0;
 			
-		    BufferedReader b = new BufferedReader(new FileReader("sampleTrainArff2.arff"));
+		    BufferedReader b = new BufferedReader(new FileReader("sampleTrainArff1.arff"));
 
             String readLine = "";
 
@@ -188,7 +189,7 @@ public class SiteLevelPredictor {
 
             while ((readLine = b.readLine()) != null) {
             	if(readLine.contains("@attribute")){
-            		totalStr += siteAttributesList.get(count) + "\n";
+            		totalStr += regionAttributesList.get(count) + "\n";
             		count++;
             	}else{
             		totalStr += readLine + "\n";
@@ -212,7 +213,7 @@ public class SiteLevelPredictor {
 	}
 
 	private static Instances prepareFeaturesToBuildBayesModal() throws Exception {
-		DataSource source = new DataSource(PAST_HISTORY_ARFF_FILE);
+		DataSource source = new DataSource(Past_History_Arff_File);
 		Instances traindata = source.getDataSet();
 		traindata.setClassIndex(traindata.numAttributes() - 1);
 		int numClasses = traindata.numClasses();
@@ -247,16 +248,18 @@ public class SiteLevelPredictor {
 			String predString = testdata.classAttribute().value((int) preNB);
 			LinkedHashMap<String, String> mapInfo = (LinkedHashMap<String, String>) readAll.get(j);
 			System.out.println(preNB + "::" + predString);
-			mapInfo.put("Overall_Site_Performance", predString);
-			mapInfo.put("Calculated_Site_Performance", predString);
+			mapInfo.put("Overall_Region_Performance", predString);
+			mapInfo.put("Calculated_Region_Performance", predString);
 		}
-		File outputPred = new File(PATH_TO_SAVE_UPDATED_SITE);
+		File outputPred = new File(PATH_TO_SAVE_UPDATED_REGION);
 		mapper.writerWithDefaultPrettyPrinter().writeValue(outputPred, readAll);
-		JsonReader.postMultiPartFile(UPDATE_DATA_SITE, PATH_TO_SAVE_UPDATED_SITE);
+
+		JsonReader.postMultiPartFile(UPDATED_REGION_URL, PATH_TO_SAVE_UPDATED_REGION);
+		// PersistJsonToMongo.mongoJsonInsert(jsonArray, "RegionDB");
 	}
 
 	private static NaiveBayes modalBuildingAndEvaluation() throws Exception {
-		DataSource source = new DataSource(PAST_HISTORY_ARFF_FILE);
+		DataSource source = new DataSource(Past_History_Arff_File);
 		Instances dataset = source.getDataSet();
 		// set class index to the last attribute
 		dataset.setClassIndex(dataset.numAttributes() - 1);

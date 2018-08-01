@@ -1,4 +1,4 @@
-package com.mkyong.core;
+package com.naivebayes.core;
 //import required classes
 import weka.core.Instances;
 import java.util.Random;

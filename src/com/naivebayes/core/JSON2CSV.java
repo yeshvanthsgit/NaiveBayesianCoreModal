@@ -1,4 +1,4 @@
-package com.mkyong.core;
+package com.naivebayes.core;
 
 import java.io.IOException;
 

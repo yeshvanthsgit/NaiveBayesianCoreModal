@@ -1,4 +1,4 @@
-package com.mkyong.core;
+package com.naivebayes.core;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mkyong.core.RefinaryLevelPredictor;
+import com.naivebayes.core.RefinaryLevelPredictor;
 
 @RestController
 @CrossOrigin("*")

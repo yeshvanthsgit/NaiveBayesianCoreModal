@@ -241,7 +241,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>com.mkyong.core.Application</mainClass>
+					<mainClass>com.naivebayes.core.Application</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

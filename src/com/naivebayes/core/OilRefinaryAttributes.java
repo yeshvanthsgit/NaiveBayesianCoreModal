@@ -1,4 +1,4 @@
-package com.mkyong.core;
+package com.naivebayes.core;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
