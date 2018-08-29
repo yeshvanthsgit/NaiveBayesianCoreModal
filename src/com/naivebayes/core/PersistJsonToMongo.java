@@ -40,7 +40,7 @@ public class PersistJsonToMongo {
 			
 			String sitePerformance = null;
 
-			DBCollection table = db.getCollection("Refinarycoll");
+			DBCollection table = db.getCollection("RefinaryCollection");
 			ArrayList asd = (ArrayList) table.distinct("Site_Name");
 			Iterator itr = asd.iterator();
 
@@ -96,7 +96,7 @@ public class PersistJsonToMongo {
 						check = false;
 					}
 					
-					DBCollection table1 = db.getCollection("Sitecoll");
+					DBCollection table1 = db.getCollection("SiteCollection");
 
 					if (check) {
 						if(badCount > 0){
@@ -146,7 +146,7 @@ public class PersistJsonToMongo {
 					BasicDBObject setQuery = new BasicDBObject();
 					setQuery.append("$set", updateFields);
 					
-					table1.updateMulti(searchQuery, setQuery);
+					table1.findAndModify(searchQuery, setQuery);
 				}
 				
 				
@@ -161,7 +161,7 @@ public class PersistJsonToMongo {
 			String regionPerformace = null;
 
 			boolean test = true;
-			DBCollection table = db.getCollection("Sitecoll");
+			DBCollection table = db.getCollection("SiteCollection");
 			ArrayList asd = (ArrayList) table.distinct("Region_Name");
 			Iterator itr = asd.iterator();
 
@@ -218,7 +218,7 @@ public class PersistJsonToMongo {
 						check = false;
 					}
 					
-					DBCollection table1 = db.getCollection("Regioncoll");
+					DBCollection table1 = db.getCollection("RegionCollection");
 
 					if (check) {
 						if(badCount > 0){
@@ -276,7 +276,7 @@ public class PersistJsonToMongo {
 					BasicDBObject setQuery = new BasicDBObject();
 					setQuery.append("$set", updateFields);
 					
-					table1.updateMulti(searchQuery, setQuery);
+					table1.findAndModify(searchQuery, setQuery);
 				}
 				
 				
